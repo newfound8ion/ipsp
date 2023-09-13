@@ -1,0 +1,20 @@
+node_modules
+.env
+coverage
+coverage.json
+typechain
+
+#Hardhat files
+cache
+artifacts
+.openzeppelin/unknown-31337.json
+
+#Sytem files
+.DS_Store
+
+main_build.zip
+
+build
+build-test
+
+reports
