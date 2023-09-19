@@ -12,10 +12,10 @@ import {IERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20
 import {IERC20MetadataUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol";
 import {UD60x18, ud, log10} from "@prb/math/src/UD60x18.sol";
 
-/// @title SafeEnergy
-/// @notice The SafeEnergy manages the minting of energy to create WATTS. This contract manages which external can mint energy and the multipliers for each energy type.
+/// @title PoC
+/// @notice The PoC manages the minting of energy to create WATTS. This contract manages which external can mint energy and the multipliers for each energy type.
 /// @dev Explain to a developer any extra details
-contract SafeEnergy is
+contract PoC is
     Initializable,
     IERC20Upgradeable,
     IERC20MetadataUpgradeable,
