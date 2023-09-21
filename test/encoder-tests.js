@@ -66,10 +66,6 @@ describe("Encoder Test", function () {
       );
       const context = "Test Context";
       const weightInWatt = 100;
-      console.log(
-        "voteActivationFunctionAddress:",
-        voteActivationFunctionAddress
-      );
       const tx = await contract.registerActivationFunction(
         6,
         multiplier,
@@ -85,8 +81,6 @@ describe("Encoder Test", function () {
       );
 
       const activationFunctionId = event?.args ? event.args[0] : null;
-      console.log("Activation Function ID:", activationFunctionId);
-      console.log(activationFunctionId);
       expect(activationFunctionId).to.equal(0);
     });
 
@@ -100,10 +94,6 @@ describe("Encoder Test", function () {
       );
       const context = "Test Context";
       const weightInWatt = 100;
-      console.log(
-        "voteActivationFunctionAddress:",
-        voteActivationFunctionAddress
-      );
 
       const tx = await contract.registerActivationFunction(
         3,
