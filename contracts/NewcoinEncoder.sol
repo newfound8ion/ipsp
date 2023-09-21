@@ -22,12 +22,12 @@ contract NewcoinEncoder is Initializable, OwnableUpgradeable {
     struct ActivationFunction {
         address issuer; // Developer who created this activationFunction
         bool approved; // Whether the activationFunction is approved by the contract owner
-        WattType wattType; // SWATT or CWATT
+        WattType wattType; // EnergyConstants
         uint256 multiplier; // Multiplier value
         bytes32 contextId; // Unique generated ID
         string context; // Context string
         address addrss; // ENS or address
-        uint256 weightInWatt; // Amount of watts the issuer has
+        uint256 weightInWatt; // Amount of watts to be issued
     }
 
     /// @dev Event emitted when an address is debugged.
@@ -58,7 +58,7 @@ contract NewcoinEncoder is Initializable, OwnableUpgradeable {
     }
 
     /// @dev Function for developers to register a new activationFunction.
-    /// @param _wattType The type of Watt (SWATT or CWATT).
+    /// @param _wattType The type of Watt - EnergyConstants
     /// @param _multiplier The multiplier value.
     /// @param _contextId The unique generated ID.
     /// @param _context The context string.
@@ -122,3 +122,4 @@ contract NewcoinEncoder is Initializable, OwnableUpgradeable {
         poC.mint(tx.origin, mintId, amountToMint);
     }
 }
+

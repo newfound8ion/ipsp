@@ -1,5 +1,5 @@
 {
-  "name": "safe-energy",
+  "name": "proof-of-creativity",
   "version": "0.0.1",
   "scripts": {
     "compile": "hardhat compile",
