@@ -8,7 +8,7 @@
 - [Purpose and Vision](#purpose-and-vision)
 - [Features](#features)
 - [System Architecture of Newcoin EVM](#system-architecture-of-newcoin-evm)
-- [Contributing ActivationFunctions](#contributing-activationfunctions)
+- [Contributing ActivationFunctions](#contributing-activationfunctions) ⬅️ Here to jump to the contribution section
 - [Running These Contracts](#running-these-contracts)
 - [Etherscan verification](#etherscan-verification)
 - [Energy ids](#energy-ids)
