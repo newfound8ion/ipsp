@@ -1,4 +1,8 @@
-# Safe Energy
+
+
+
+
+<--! # Safe Energy
 
 ![build status](https://github.com/neftyblocks/safe-energy-contracts/actions/workflows/ci.yml/badge.svg)
 ![slither status](https://github.com/neftyblocks/safe-energy-contracts/actions/workflows/slither.yml/badge.svg)
@@ -92,3 +96,5 @@ id: twitterFollowers
 idHash: 0xb721b99bf249c07883e8ba2677a2f38bb84eb42b58ca6f64170935177cd8ada7
 multiplier: 1
 energy: NWATT
+
+-->
