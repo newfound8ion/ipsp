@@ -108,11 +108,12 @@ contract NewcoinEncoder is Initializable, OwnableUpgradeable {
     function activate(uint256 activationFunctionId) external {
         require(activationFunctions[activationFunctionId].approved, "activationFunction not approved");
         emit DebugAddress(activationFunctions[activationFunctionId].addrss);
-        IActivationFunction condition = IActivationFunction(activationFunctions[activationFunctionId].addrss);
-        require(condition.activate(), "ActivationFunction condition not met");
-        
+        IActivationFunction af = IActivationFunction(activationFunctions[activationFunctionId].addrss);
+        require(af.activate(), "ActivationFunction condition not met");
+
         uint256 amountToMint = activationFunctions[activationFunctionId].weightInWatt * activationFunctions[activationFunctionId].multiplier;
-        // TODO: Add configuration for SUBWATT ID / Neural token
-        poC.mint(tx.origin, 1, amountToMint);
+        uint8 mintId = uint8(activationFunctions[activationFunctionId].wattType);
+
+        poC.mint(tx.origin, mintId, amountToMint);
     }
 }

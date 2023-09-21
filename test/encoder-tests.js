@@ -236,7 +236,7 @@ describe("Encoder Test", function () {
       );
     });
 
-    it("should mint watts after activation function approval", async function () {
+    it("should not allow non-owners to approve an activation function", async function () {
       const multiplier = 2;
       const contextId = ethers.utils.keccak256(
         ethers.utils.defaultAbiCoder.encode(
@@ -249,6 +249,42 @@ describe("Encoder Test", function () {
 
       const tx = await contract.registerActivationFunction(
         0,
+        multiplier,
+        contextId,
+        context,
+        voteActivationFunctionAddress,
+        weightInWatt
+      );
+      const receipt = await tx.wait();
+
+      const event = receipt.events?.find(
+        (e) => e.event === "ActivationFunctionRegistered"
+      );
+
+      if (!event || !event.args)
+        throw new Error(
+          "ActivationFunctionRegistered event not found or missing arguments"
+        );
+      const activationFunctionId = event.args[0];
+
+      await expect(
+        contract.connect(user1).approveActivationFunction(activationFunctionId)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
+    });
+
+    it("should mint watts after activation function approval", async function () {
+      const multiplier = 2;
+      const contextId = ethers.utils.keccak256(
+        ethers.utils.defaultAbiCoder.encode(
+          ["address", "uint256"],
+          [deployerAddress, Math.floor(Date.now() / 1000)]
+        )
+      );
+      const context = "Test Context";
+      const weightInWatt = 100;
+
+      const tx = await contract.registerActivationFunction(
+        1,
         multiplier,
         contextId,
         context,
