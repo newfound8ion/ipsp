@@ -16,6 +16,7 @@ contract PowerUpScorer is Initializable, OwnableUpgradeable {
         uint32 powerUpCounter;
     }
 
+
     uint32 private constant MAX_DAILY_STREAK = 10;
     uint256 private constant MIN_CWATTS = 10 ether;
 
@@ -37,7 +38,7 @@ contract PowerUpScorer is Initializable, OwnableUpgradeable {
     /// @notice A mapping that keeps track of the user streaks and experience
     mapping(address => UserData) public userData;
 
-    /// @notice A mapping that keeps track of the milestones that will award points when the powerup counter is reached.
+        /// @notice A mapping that keeps track of the milestones that will award points when the powerup counter is reached.
     mapping(uint256 => bool) public experienceMilestones;
 
     /// @notice Throws if the user has already been powered up by this address.

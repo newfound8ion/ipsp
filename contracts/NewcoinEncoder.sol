@@ -14,8 +14,9 @@ interface IActivationFunction {
 /// @notice The handler contract that is authorized to mint NeuralTokens and Watts by registering approved ValidationFunctions.
 contract NewcoinEncoder is Initializable, OwnableUpgradeable {
 
+
     /// @dev Enum to represent the type of Watt.
-    enum WattType { SWATT, CWATT }
+    enum WattType { NONE, CWATT, XWATT, LWATT, NWATT, PWATT, SWATT, VWATT }
 
     /// @dev Struct to represent an activationFunction.
     struct ActivationFunction {
@@ -72,6 +73,9 @@ contract NewcoinEncoder is Initializable, OwnableUpgradeable {
         address _addrss,
         uint256 _weightInWatt
     ) external returns (uint256) {
+
+        require(_wattType != WattType.NONE, "Invalid watt type");
+
         ActivationFunction memory newActivationFunction = ActivationFunction({
             issuer: msg.sender,
             approved: false,
@@ -110,6 +114,7 @@ contract NewcoinEncoder is Initializable, OwnableUpgradeable {
         emit DebugAddress(activationFunctions[activationFunctionId].addrss);
         IActivationFunction af = IActivationFunction(activationFunctions[activationFunctionId].addrss);
         require(af.activate(), "ActivationFunction condition not met");
+
 
         uint256 amountToMint = activationFunctions[activationFunctionId].weightInWatt * activationFunctions[activationFunctionId].multiplier;
         uint8 mintId = uint8(activationFunctions[activationFunctionId].wattType);

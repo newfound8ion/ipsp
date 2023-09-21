@@ -71,7 +71,7 @@ describe("Encoder Test", function () {
         voteActivationFunctionAddress
       );
       const tx = await contract.registerActivationFunction(
-        0,
+        6,
         multiplier,
         contextId,
         context,
@@ -106,7 +106,7 @@ describe("Encoder Test", function () {
       );
 
       const tx = await contract.registerActivationFunction(
-        0,
+        3,
         multiplier,
         contextId,
         context,
@@ -139,7 +139,7 @@ describe("Encoder Test", function () {
       const weightInWatt = 100;
 
       const tx = await contract.registerActivationFunction(
-        0,
+        2,
         multiplier,
         contextId,
         context,
@@ -170,7 +170,7 @@ describe("Encoder Test", function () {
       const weightInWatt = 100;
 
       const tx = await contract.registerActivationFunction(
-        0,
+        5,
         multiplier,
         contextId,
         context,
@@ -209,7 +209,7 @@ describe("Encoder Test", function () {
       const weightInWatt = 100;
 
       const tx = await contract.registerActivationFunction(
-        0,
+        3,
         multiplier,
         contextId,
         context,
@@ -248,7 +248,7 @@ describe("Encoder Test", function () {
       const weightInWatt = 100;
 
       const tx = await contract.registerActivationFunction(
-        0,
+        7,
         multiplier,
         contextId,
         context,
