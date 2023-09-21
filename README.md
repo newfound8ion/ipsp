@@ -1,6 +1,10 @@
 
 # Introduction
 
+- [Overview of Newcoin EVM](#overview-of-newcoin-evm)
+- [Purpose and Vision](#purpose-and-vision)
+- [Features](#features)
+
 ## Overview of Newcoin EVM
 
 Newcoin EVM (Ethereum Virtual Machine) is a cutting-edge decentralized algorithm designed to revolutionize the way we discern valuable contributions across digital networks. Built on the principles of robustness, adaptive learning, and recursiveness, Newcoin EVM seeks to provide a seamless interface between diverse systems, ensuring the synergistic interoperability of network intelligence.
