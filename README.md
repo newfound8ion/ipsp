@@ -196,6 +196,7 @@ Expand the functionality of the Proof of Creativity contracts by contributing ne
 ```
 
 Any question contact via Telegram:
+@vectornewman
 @lukeannison
 
 ## Running These Contracts
