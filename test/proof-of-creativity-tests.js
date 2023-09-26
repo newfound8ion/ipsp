@@ -1,616 +1,616 @@
 const { expect } = require("chai");
 const { ethers, upgrades, waffle, artifacts } = require("hardhat");
-const { cwatt } = require("./test-utils");
-const { bignumber } = require("ethers");
-const { pwatt, xwatt, lwatt, nwatt, swatt, vwatt } = require("./test-utils");
-const { parseether } = require("ethers/lib/utils");
+const { CWATT } = require("./test-utils");
+const { BigNumber } = require("ethers");
+const { PWATT, XWATT, LWATT, NWATT, SWATT, VWATT } = require("./test-utils");
+const { parseEther } = require("ethers/lib/utils");
 
-describe("proof of creativity test", function () {
-  let poc;
-  let poc;
-  let milestoneawarder;
-  let milestoneawarder;
+describe("Proof of Creativity Test", function () {
+  let PoC;
+  let poC;
+  let MilestoneAwarder;
+  let milestoneAwarder;
   let owner;
-  let owneraddress;
+  let ownerAddress;
   let recipient1;
   let recipient2;
-  let recipient1address;
-  let recipient2address;
-  const tokencontracts = [];
+  let recipient1Address;
+  let recipient2Address;
+  const tokenContracts = [];
 
-  beforeeach(async function () {
-    [owner, recipient1, recipient2] = await ethers.getsigners();
-    recipient1address = await recipient1.getaddress();
-    recipient2address = await recipient2.getaddress();
-    owneraddress = await owner.getaddress();
+  beforeEach(async function () {
+    [owner, recipient1, recipient2] = await ethers.getSigners();
+    recipient1Address = await recipient1.getAddress();
+    recipient2Address = await recipient2.getAddress();
+    ownerAddress = await owner.getAddress();
 
-    poc = await ethers.getcontractfactory("poc");
-    poc = await upgrades.deployproxy(poc, {
+    PoC = await ethers.getContractFactory("PoC");
+    poC = await upgrades.deployProxy(PoC, {
       initializer: "initialize",
     });
 
-    // deploy the mock linkcreator contract
-    milestoneawarder = await artifacts.readartifact("imilestoneawarder");
-    milestoneawarder = await waffle.deploymockcontract(
+    // Deploy the mock LinkCreator contract
+    MilestoneAwarder = await artifacts.readArtifact("IMilestoneAwarder");
+    milestoneAwarder = await waffle.deployMockContract(
       owner,
-      milestoneawarder.abi
+      MilestoneAwarder.abi
     );
 
-    await poc.deployed();
+    await poC.deployed();
 
-    tokencontracts[0] = await ethers.getcontractat(
-      "token",
-      await poc.tokenaddresses(0)
+    tokenContracts[0] = await ethers.getContractAt(
+      "Token",
+      await poC.tokenAddresses(0)
     );
-    tokencontracts[1] = await ethers.getcontractat(
-      "token",
-      await poc.tokenaddresses(1)
+    tokenContracts[1] = await ethers.getContractAt(
+      "Token",
+      await poC.tokenAddresses(1)
     );
-    tokencontracts[2] = await ethers.getcontractat(
-      "token",
-      await poc.tokenaddresses(2)
+    tokenContracts[2] = await ethers.getContractAt(
+      "Token",
+      await poC.tokenAddresses(2)
     );
-    tokencontracts[3] = await ethers.getcontractat(
-      "token",
-      await poc.tokenaddresses(3)
+    tokenContracts[3] = await ethers.getContractAt(
+      "Token",
+      await poC.tokenAddresses(3)
     );
-    tokencontracts[4] = await ethers.getcontractat(
-      "token",
-      await poc.tokenaddresses(4)
+    tokenContracts[4] = await ethers.getContractAt(
+      "Token",
+      await poC.tokenAddresses(4)
     );
-    tokencontracts[5] = await ethers.getcontractat(
-      "token",
-      await poc.tokenaddresses(5)
+    tokenContracts[5] = await ethers.getContractAt(
+      "Token",
+      await poC.tokenAddresses(5)
     );
-    tokencontracts[6] = await ethers.getcontractat(
-      "token",
-      await poc.tokenaddresses(6)
+    tokenContracts[6] = await ethers.getContractAt(
+      "Token",
+      await poC.tokenAddresses(6)
     );
-    tokencontracts[7] = await ethers.getcontractat(
-      "token",
-      await poc.tokenaddresses(7)
+    tokenContracts[7] = await ethers.getContractAt(
+      "Token",
+      await poC.tokenAddresses(7)
     );
 
-    await poc.addtokenminter(1, owneraddress);
-    await poc.addtokenminter(2, owneraddress);
-    await poc.addtokenminter(3, owneraddress);
-    await poc.addtokenminter(4, owneraddress);
-    await poc.addtokenminter(5, owneraddress);
-    await poc.addtokenminter(6, owneraddress);
-    await poc.addtokenminter(7, owneraddress);
+    await poC.addTokenMinter(1, ownerAddress);
+    await poC.addTokenMinter(2, ownerAddress);
+    await poC.addTokenMinter(3, ownerAddress);
+    await poC.addTokenMinter(4, ownerAddress);
+    await poC.addTokenMinter(5, ownerAddress);
+    await poC.addTokenMinter(6, ownerAddress);
+    await poC.addTokenMinter(7, ownerAddress);
 
-    await poc.setmilestoneawarder(milestoneawarder.address);
+    await poC.setMilestoneAwarder(milestoneAwarder.address);
 
-    await milestoneawarder.mock.awardmilestonesunlocked
-      .withargs(recipient1address)
+    await milestoneAwarder.mock.awardMilestonesUnlocked
+      .withArgs(recipient1Address)
       .returns();
   });
 
-  describe("setup", async function () {
+  describe("Setup", async function () {
     it("should throw an error when trying initialize twice", async function () {
-      await expect(poc.initialize()).to.be.revertedwith(
-        "initializable: contract is already initialized"
+      await expect(poC.initialize()).to.be.revertedWith(
+        "Initializable: contract is already initialized"
       );
     });
   });
 
-  describe("token metadata", async function () {
+  describe("Token metadata", async function () {
     it("should have the correct name", async function () {
-      expect(await poc.name()).to.equal("watt");
+      expect(await poC.name()).to.equal("WATT");
     });
 
     it("should have the correct symbol", async function () {
-      expect(await poc.symbol()).to.equal("watt");
+      expect(await poC.symbol()).to.equal("WATT");
     });
 
     it("should have the correct decimals", async function () {
-      expect(await poc.decimals()).to.equal(18);
+      expect(await poC.decimals()).to.equal(18);
     });
 
     it("should get the balance of a token", async function () {
-      await poc
+      await poC
         .connect(owner)
-        .mint(recipient1address, cwatt, bignumber.from(10).pow(18));
-      const balance = await poc.balanceofenergy(recipient1address, cwatt);
-      expect(balance).to.equal(bignumber.from(10).pow(18));
+        .mint(recipient1Address, CWATT, BigNumber.from(10).pow(18));
+      const balance = await poC.balanceOfEnergy(recipient1Address, CWATT);
+      expect(balance).to.equal(BigNumber.from(10).pow(18));
     });
 
     it("should throw when getting the balance of a token that doesn't exist", async function () {
       await expect(
-        poc.balanceofenergy(recipient1address, 100)
-      ).to.be.revertedwith("invalidtokenid");
+        poC.balanceOfEnergy(recipient1Address, 100)
+      ).to.be.revertedWith("InvalidTokenId");
     });
   });
 
-  describe("milestone awarder management", async function () {
+  describe("Milestone awarder management", async function () {
     it("should throw an error when trying to set the milestone awarder with a non owner account", async function () {
       await expect(
-        poc.connect(recipient1).setmilestoneawarder(recipient1address)
-      ).to.be.revertedwith("ownable: caller is not the owner");
+        poC.connect(recipient1).setMilestoneAwarder(recipient1Address)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
     });
 
     it("should set the milestone awarder", async function () {
-      await poc.setmilestoneawarder(recipient1address);
-      expect(await poc.milestoneawarder()).to.equal(recipient1address);
+      await poC.setMilestoneAwarder(recipient1Address);
+      expect(await poC.milestoneAwarder()).to.equal(recipient1Address);
     });
 
     it("should throw an error when trying to set the milestone awarder to the zero address", async function () {
       await expect(
-        poc.setmilestoneawarder(ethers.constants.addresszero)
-      ).to.be.revertedwith("invalidaddress");
+        poC.setMilestoneAwarder(ethers.constants.AddressZero)
+      ).to.be.revertedWith("InvalidAddress");
     });
   });
 
-  describe("mint tokens with erc20", async function () {
-    const testmint = async ({
+  describe("Mint tokens with ERC20", async function () {
+    const testMint = async ({
       recipient,
       minter,
       tokens,
-      skipbalancechecks = false,
+      skipBalanceChecks = false,
     }) => {
-      let expectedwatts = 0;
-      const tokenbalances = {};
+      let expectedWatts = 0;
+      const tokenBalances = {};
 
       for (let i = 0; i < tokens.length; i++) {
-        const { tokenid, amount } = tokens[i];
+        const { tokenId, amount } = tokens[i];
 
-        // convert to bignumber and multiply by 10^18
-        const amountnumber = ethers.bignumber
-          .from(amount)
-          .mul(ethers.bignumber.from(10).pow(18));
+        // Convert to bignumber and multiply by 10^18
+        const amountNumber = ethers.BigNumber.from(amount).mul(
+          ethers.BigNumber.from(10).pow(18)
+        );
 
-        // mint tokens
-        await poc.connect(minter).mint(recipient, tokenid, amountnumber);
+        // Mint tokens
+        await poC.connect(minter).mint(recipient, tokenId, amountNumber);
 
-        if (!tokenbalances[tokenid]) {
-          tokenbalances[tokenid] = ethers.bignumber.from(0);
+        if (!tokenBalances[tokenId]) {
+          tokenBalances[tokenId] = ethers.BigNumber.from(0);
         }
 
-        tokenbalances[tokenid] = tokenbalances[tokenid].add(amountnumber);
+        tokenBalances[tokenId] = tokenBalances[tokenId].add(amountNumber);
       }
 
-      const watts = await poc.balanceof(recipient);
+      const watts = await poC.balanceOf(recipient);
 
-      // check token balances
-      if (!skipbalancechecks) {
-        for (let i = 0; i < object.keys(tokenbalances).length; i++) {
-          const tokenid = object.keys(tokenbalances)[i];
-          const expectedbalance = tokenbalances[tokenid];
+      // Check token balances
+      if (!skipBalanceChecks) {
+        for (let i = 0; i < Object.keys(tokenBalances).length; i++) {
+          const tokenId = Object.keys(tokenBalances)[i];
+          const expectedBalance = tokenBalances[tokenId];
 
-          const balance = await tokencontracts[tokenid].balanceof(recipient);
+          const balance = await tokenContracts[tokenId].balanceOf(recipient);
 
-          // calculate expected watts based on actual balances
-          expectedwatts += math.log10(
-            balance.div(ethers.bignumber.from(10).pow(18)).tonumber()
+          // Calculate expected WATTS based on actual balances
+          expectedWatts += Math.log10(
+            balance.div(ethers.BigNumber.from(10).pow(18)).toNumber()
           );
 
-          expect(balance).to.equal(expectedbalance);
+          expect(balance).to.equal(expectedBalance);
         }
 
-        const roundedwatts = math.round(watts / 10e12) / 10e4;
-        const roundedexpected = math.round(expectedwatts * 10e4) / 10e4;
-        expect(roundedwatts).to.equal(roundedexpected);
+        const roundedWatts = Math.round(watts / 10e12) / 10e4;
+        const roundedExpected = Math.round(expectedWatts * 10e4) / 10e4;
+        expect(roundedWatts).to.equal(roundedExpected);
       }
       return watts;
     };
 
-    it("should calculate watts when minting tokens", async function () {
-      await testmint({
-        recipient: recipient1address,
+    it("should calculate WATTS when minting tokens", async function () {
+      await testMint({
+        recipient: recipient1Address,
         minter: owner,
-        tokens: [{ tokenid: 1, amount: 100 }],
+        tokens: [{ tokenId: 1, amount: 100 }],
       });
     });
 
-    it("should calculate watts when minting multiple tokens", async function () {
-      await testmint({
-        recipient: recipient1address,
+    it("should calculate WATTS when minting multiple tokens", async function () {
+      await testMint({
+        recipient: recipient1Address,
         minter: owner,
         tokens: [
-          { tokenid: 1, amount: 900 },
-          { tokenid: 2, amount: 800000 },
-          { tokenid: 3, amount: 700 },
-          { tokenid: 4, amount: 50 },
-          { tokenid: 4, amount: 50 },
-          { tokenid: 4, amount: 50 },
+          { tokenId: 1, amount: 900 },
+          { tokenId: 2, amount: 800000 },
+          { tokenId: 3, amount: 700 },
+          { tokenId: 4, amount: 50 },
+          { tokenId: 4, amount: 50 },
+          { tokenId: 4, amount: 50 },
         ],
       });
     });
 
-    it("should calculate watts when minting multiple tokens to multiple recipients and match total supply", async function () {
-      const recipient1watts = await testmint({
-        recipient: recipient1address,
+    it("should calculate WATTS when minting multiple tokens to multiple recipients and match total supply", async function () {
+      const recipient1Watts = await testMint({
+        recipient: recipient1Address,
         minter: owner,
         tokens: [
-          { tokenid: 1, amount: 900 },
-          { tokenid: 2, amount: 800000 },
-          { tokenid: 3, amount: 700 },
-          { tokenid: 4, amount: 150 },
+          { tokenId: 1, amount: 900 },
+          { tokenId: 2, amount: 800000 },
+          { tokenId: 3, amount: 700 },
+          { tokenId: 4, amount: 150 },
         ],
       });
-      const recipient2watts = await testmint({
-        recipient: recipient2address,
+      const recipient2Watts = await testMint({
+        recipient: recipient2Address,
         minter: owner,
         tokens: [
-          { tokenid: 1, amount: 900 },
-          { tokenid: 2, amount: 800000 },
+          { tokenId: 1, amount: 900 },
+          { tokenId: 2, amount: 800000 },
         ],
       });
 
-      const totalsupply = await poc.totalsupply();
-      expect(totalsupply).to.equal(recipient1watts.add(recipient2watts));
+      const totalSupply = await poC.totalSupply();
+      expect(totalSupply).to.equal(recipient1Watts.add(recipient2Watts));
     });
 
-    it("should calculate watts when minting small numbers", async function () {
-      const recipientwatts = await testmint({
-        recipient: recipient1address,
+    it("should calculate WATTS when minting small numbers", async function () {
+      const recipientWatts = await testMint({
+        recipient: recipient1Address,
         minter: owner,
         tokens: [
-          { tokenid: 1, amount: 1 },
-          { tokenid: 1, amount: 1 },
+          { tokenId: 1, amount: 1 },
+          { tokenId: 1, amount: 1 },
         ],
       });
 
-      const totalsupply = await poc.totalsupply();
-      expect(totalsupply).to.equal(recipientwatts);
+      const totalSupply = await poC.totalSupply();
+      expect(totalSupply).to.equal(recipientWatts);
     });
 
-    it("should calculate watts when minting and changing the multipliers", async function () {
-      await testmint({
-        recipient: recipient1address,
+    it("should calculate WATTS when minting and changing the multipliers", async function () {
+      await testMint({
+        recipient: recipient1Address,
         minter: owner,
-        tokens: [{ tokenid: 1, amount: 10 }],
-        skipbalancechecks: true,
+        tokens: [{ tokenId: 1, amount: 10 }],
+        skipBalanceChecks: true,
       });
 
-      await poc.settokenmultiplier(1, 50);
+      await poC.setTokenMultiplier(1, 50);
 
-      await testmint({
-        recipient: recipient1address,
+      await testMint({
+        recipient: recipient1Address,
         minter: owner,
-        tokens: [{ tokenid: 1, amount: 10 }],
-        skipbalancechecks: true,
+        tokens: [{ tokenId: 1, amount: 10 }],
+        skipBalanceChecks: true,
       });
 
-      const watts = (math.log10(10) + math.log10(2) * 0.5) * 10e18;
+      const watts = (Math.log10(10) + Math.log10(2) * 0.5) * 10e18;
 
-      // check with a precision of 14 decimals
-      const totalsupply = (await poc.totalsupply()).tostring().substring(0, 15);
-      const wattsstring = watts.tostring().substring(0, 15);
-      expect(totalsupply).to.equal(wattsstring);
+      // Check with a precision of 14 decimals
+      const totalSupply = (await poC.totalSupply()).toString().substring(0, 15);
+      const wattsString = watts.toString().substring(0, 15);
+      expect(totalSupply).to.equal(wattsString);
     });
 
     it("should throw when minting tokens with a zero address", async function () {
       await expect(
-        poc
+        poC
           .connect(owner)
           .mint(
-            ethers.constants.addresszero,
+            ethers.constants.AddressZero,
             1,
-            ethers.bignumber.from(10).pow(18)
+            ethers.BigNumber.from(10).pow(18)
           )
-      ).to.be.revertedwith("erc20: mint to the zero address");
+      ).to.be.revertedWith("ERC20: mint to the zero address");
     });
 
     it("should throw when minting tokens with a unathorized minter", async function () {
       await expect(
-        poc
+        poC
           .connect(recipient1)
-          .mint(recipient1address, 1, ethers.bignumber.from(10).pow(18))
-      ).to.be.revertedwith("invalidminter");
+          .mint(recipient1Address, 1, ethers.BigNumber.from(10).pow(18))
+      ).to.be.revertedWith("InvalidMinter");
     });
 
     it("should throw when minting tokens with a non-existing token", async function () {
       await expect(
-        poc
+        poC
           .connect(owner)
-          .mint(recipient1address, 0, ethers.bignumber.from(10).pow(18))
-      ).to.be.revertedwith("invalidtokenid");
+          .mint(recipient1Address, 0, ethers.BigNumber.from(10).pow(18))
+      ).to.be.revertedWith("InvalidTokenId");
       await expect(
-        poc
+        poC
           .connect(owner)
-          .mint(recipient1address, 8, ethers.bignumber.from(10).pow(18))
-      ).to.be.revertedwith("invalidtokenid");
+          .mint(recipient1Address, 8, ethers.BigNumber.from(10).pow(18))
+      ).to.be.revertedWith("InvalidTokenId");
     });
 
     it("should throw when minting tokens with an amount less than 10e18", async function () {
       await expect(
-        poc
+        poC
           .connect(owner)
-          .mint(recipient1address, 1, ethers.bignumber.from(10).pow(18).sub(1))
-      ).to.be.revertedwith("invalidmintamount");
+          .mint(recipient1Address, 1, ethers.BigNumber.from(10).pow(18).sub(1))
+      ).to.be.revertedWith("InvalidMintAmount");
     });
   });
 
-  describe("transfer tokens", async function () {
+  describe("Transfer tokens", async function () {
     it("should throw when transfering tokens", async function () {
-      await expect(poc.transfer(recipient1address, 100)).to.be.revertedwith(
-        "transfersdisabled"
+      await expect(poC.transfer(recipient1Address, 100)).to.be.revertedWith(
+        "TransfersDisabled"
       );
       await expect(
-        poc.transferfrom(owneraddress, recipient1address, 100)
-      ).to.be.revertedwith("transfersdisabled");
+        poC.transferFrom(ownerAddress, recipient1Address, 100)
+      ).to.be.revertedWith("TransfersDisabled");
     });
 
     it("should throw when approving tokens", async function () {
-      await expect(poc.approve(recipient1address, 100)).to.be.revertedwith(
-        "transfersdisabled"
+      await expect(poC.approve(recipient1Address, 100)).to.be.revertedWith(
+        "TransfersDisabled"
       );
-      expect(await poc.allowance(owneraddress, recipient1address)).to.equal(0);
+      expect(await poC.allowance(ownerAddress, recipient1Address)).to.equal(0);
     });
   });
 
-  describe("minter management", async function () {
+  describe("Minter management", async function () {
     it("should add minter", async function () {
-      await poc.connect(owner).addtokenminter(1, recipient1address);
-      expect(await poc.tokenminters(1, recipient1address)).to.equal(true);
+      await poC.connect(owner).addTokenMinter(1, recipient1Address);
+      expect(await poC.tokenMinters(1, recipient1Address)).to.equal(true);
     });
 
     it("should remove minter", async function () {
-      await poc.connect(owner).addtokenminter(1, recipient1address);
-      await poc.connect(owner).revoketokenminter(1, recipient1address);
-      expect(await poc.tokenminters(1, recipient1address)).to.equal(false);
+      await poC.connect(owner).addTokenMinter(1, recipient1Address);
+      await poC.connect(owner).revokeTokenMinter(1, recipient1Address);
+      expect(await poC.tokenMinters(1, recipient1Address)).to.equal(false);
     });
 
     it("should throw when adding minter by non-owner", async function () {
       await expect(
-        poc.connect(recipient1).addtokenminter(1, recipient1address)
-      ).to.be.revertedwith("ownable: caller is not the owner");
+        poC.connect(recipient1).addTokenMinter(1, recipient1Address)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
     });
 
     it("should throw when removing minter by non-owner", async function () {
       await expect(
-        poc.connect(recipient1).revoketokenminter(1, recipient1address)
-      ).to.be.revertedwith("ownable: caller is not the owner");
+        poC.connect(recipient1).revokeTokenMinter(1, recipient1Address)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
     });
 
     it("should throw when adding minter for non-existing token", async function () {
       await expect(
-        poc.connect(owner).addtokenminter(100, recipient1address)
-      ).to.be.revertedwith("invalidtokenid");
+        poC.connect(owner).addTokenMinter(100, recipient1Address)
+      ).to.be.revertedWith("InvalidTokenId");
     });
 
     it("should throw when removing minter for non-existing token", async function () {
       await expect(
-        poc.connect(owner).revoketokenminter(100, recipient1address)
-      ).to.be.revertedwith("invalidtokenid");
+        poC.connect(owner).revokeTokenMinter(100, recipient1Address)
+      ).to.be.revertedWith("InvalidTokenId");
     });
 
     it("should throw when adding minter for non-existing address", async function () {
       await expect(
-        poc.connect(owner).addtokenminter(1, ethers.constants.addresszero)
-      ).to.be.revertedwith("invalidaddress");
+        poC.connect(owner).addTokenMinter(1, ethers.constants.AddressZero)
+      ).to.be.revertedWith("InvalidAddress");
     });
 
     it("should throw when removing minter for non-existing address", async function () {
       await expect(
-        poc.connect(owner).revoketokenminter(1, ethers.constants.addresszero)
-      ).to.be.revertedwith("invalidaddress");
+        poC.connect(owner).revokeTokenMinter(1, ethers.constants.AddressZero)
+      ).to.be.revertedWith("InvalidAddress");
     });
 
     it("should throw when adding minter for a zero address", async function () {
       await expect(
-        poc.connect(owner).addtokenminter(1, ethers.constants.addresszero)
-      ).to.be.revertedwith("invalidaddress");
+        poC.connect(owner).addTokenMinter(1, ethers.constants.AddressZero)
+      ).to.be.revertedWith("InvalidAddress");
     });
 
     it("should throw when removing minter for a zero address", async function () {
       await expect(
-        poc.connect(owner).revoketokenminter(1, ethers.constants.addresszero)
-      ).to.be.revertedwith("invalidaddress");
+        poC.connect(owner).revokeTokenMinter(1, ethers.constants.AddressZero)
+      ).to.be.revertedWith("InvalidAddress");
     });
   });
 
-  describe("multiplier management", async function () {
+  describe("Multiplier management", async function () {
     it("should set multiplier", async function () {
-      await poc.connect(owner).settokenmultiplier(1, 5000);
-      expect(await poc.tokenmultipliers(1)).to.equal(5000);
+      await poC.connect(owner).setTokenMultiplier(1, 5000);
+      expect(await poC.tokenMultipliers(1)).to.equal(5000);
     });
 
     it("should throw when setting multiplier by non-owner", async function () {
       await expect(
-        poc.connect(recipient1).settokenmultiplier(1, 5000)
-      ).to.be.revertedwith("ownable: caller is not the owner");
+        poC.connect(recipient1).setTokenMultiplier(1, 5000)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
     });
 
     it("should throw when setting multiplier for non-existing token", async function () {
       await expect(
-        poc.connect(owner).settokenmultiplier(100, 5000)
-      ).to.be.revertedwith("invalidtokenid");
+        poC.connect(owner).setTokenMultiplier(100, 5000)
+      ).to.be.revertedWith("InvalidTokenId");
     });
 
     it("should throw when setting multiplier for a value too small", async function () {
       await expect(
-        poc.connect(owner).settokenmultiplier(1, 0)
-      ).to.be.revertedwith("invalidmultiplier");
+        poC.connect(owner).setTokenMultiplier(1, 0)
+      ).to.be.revertedWith("InvalidMultiplier");
     });
 
     it("should throw when setting multiplier for a value too large", async function () {
       await expect(
-        poc.connect(owner).settokenmultiplier(1, 10001)
-      ).to.be.revertedwith("invalidmultiplier");
+        poC.connect(owner).setTokenMultiplier(1, 10001)
+      ).to.be.revertedWith("InvalidMultiplier");
     });
   });
 
-  describe("milestones achievements", async function () {
+  describe("Milestones achievements", async function () {
     it("should track a milestone when reached", async function () {
-      await poc
+      await poC
         .connect(owner)
-        .mint(recipient1address, cwatt, parseether("10000"));
+        .mint(recipient1Address, CWATT, parseEther("10000"));
 
-      expect(await poc.lastmilestoneunlocked(recipient1address)).to.equal(0);
+      expect(await poC.lastMilestoneUnlocked(recipient1Address)).to.equal(0);
 
-      await poc
+      await poC
         .connect(owner)
-        .mint(recipient1address, cwatt, parseether("100000000000"));
+        .mint(recipient1Address, CWATT, parseEther("100000000000"));
 
-      expect(await poc.lastmilestoneunlocked(recipient1address)).to.equal(1);
+      expect(await poC.lastMilestoneUnlocked(recipient1Address)).to.equal(1);
 
-      await poc
+      await poC
         .connect(owner)
-        .mint(recipient1address, xwatt, parseether("100000000000"));
+        .mint(recipient1Address, XWATT, parseEther("100000000000"));
 
-      expect(await poc.lastmilestoneunlocked(recipient1address)).to.equal(2);
+      expect(await poC.lastMilestoneUnlocked(recipient1Address)).to.equal(2);
 
-      await poc
+      await poC
         .connect(owner)
-        .mint(recipient1address, lwatt, parseether("100000000000"));
+        .mint(recipient1Address, LWATT, parseEther("100000000000"));
 
-      expect(await poc.lastmilestoneunlocked(recipient1address)).to.equal(3);
+      expect(await poC.lastMilestoneUnlocked(recipient1Address)).to.equal(3);
 
-      await poc
+      await poC
         .connect(owner)
-        .mint(recipient1address, nwatt, parseether("100000000000"));
+        .mint(recipient1Address, NWATT, parseEther("100000000000"));
 
-      expect(await poc.lastmilestoneunlocked(recipient1address)).to.equal(4);
+      expect(await poC.lastMilestoneUnlocked(recipient1Address)).to.equal(4);
 
-      await poc
+      await poC
         .connect(owner)
-        .mint(recipient1address, pwatt, parseether("100000000000"));
+        .mint(recipient1Address, PWATT, parseEther("100000000000"));
 
-      expect(await poc.lastmilestoneunlocked(recipient1address)).to.equal(5);
+      expect(await poC.lastMilestoneUnlocked(recipient1Address)).to.equal(5);
 
-      await poc
+      await poC
         .connect(owner)
-        .mint(recipient1address, swatt, parseether("100000000000"));
+        .mint(recipient1Address, SWATT, parseEther("100000000000"));
 
-      expect(await poc.lastmilestoneunlocked(recipient1address)).to.equal(6);
+      expect(await poC.lastMilestoneUnlocked(recipient1Address)).to.equal(6);
 
-      await poc
+      await poC
         .connect(owner)
-        .mint(recipient1address, vwatt, parseether("100000000000"));
+        .mint(recipient1Address, VWATT, parseEther("100000000000"));
 
-      expect(await poc.lastmilestoneunlocked(recipient1address)).to.equal(7);
+      expect(await poC.lastMilestoneUnlocked(recipient1Address)).to.equal(7);
 
-      await poc
+      await poC
         .connect(owner)
-        .mint(recipient1address, cwatt, parseether("1000000000000"));
+        .mint(recipient1Address, CWATT, parseEther("1000000000000"));
 
-      expect(await poc.lastmilestoneunlocked(recipient1address)).to.equal(7);
+      expect(await poC.lastMilestoneUnlocked(recipient1Address)).to.equal(7);
 
-      await poc
+      await poC
         .connect(owner)
-        .mint(recipient1address, xwatt, parseether("1000000000000"));
+        .mint(recipient1Address, XWATT, parseEther("1000000000000"));
 
-      await poc
+      await poC
         .connect(owner)
-        .mint(recipient1address, lwatt, parseether("1000000000000"));
+        .mint(recipient1Address, LWATT, parseEther("1000000000000"));
 
-      await poc
+      await poC
         .connect(owner)
-        .mint(recipient1address, nwatt, parseether("1000000000000"));
+        .mint(recipient1Address, NWATT, parseEther("1000000000000"));
 
-      await poc
+      await poC
         .connect(owner)
-        .mint(recipient1address, pwatt, parseether("100000000000000"));
+        .mint(recipient1Address, PWATT, parseEther("100000000000000"));
 
-      await poc
+      await poC
         .connect(owner)
-        .mint(recipient1address, swatt, parseether("100000000000000"));
+        .mint(recipient1Address, SWATT, parseEther("100000000000000"));
 
-      await poc
+      await poC
         .connect(owner)
-        .mint(recipient1address, vwatt, parseether("100000000000000"));
+        .mint(recipient1Address, VWATT, parseEther("100000000000000"));
 
       // console.log(
-      //   "cwatt: ",
-      //   formatether(await poc.balanceofenergy(recipient1address, cwatt))
+      //   "CWATT: ",
+      //   formatEther(await poC.balanceOfEnergy(recipient1Address, CWATT))
       // );
 
       // console.log(
-      //   "xwatt: ",
-      //   formatether(await poc.balanceofenergy(recipient1address, xwatt))
+      //   "XWATT: ",
+      //   formatEther(await poC.balanceOfEnergy(recipient1Address, XWATT))
       // );
 
       // console.log(
-      //   "lwatt: ",
-      //   formatether(await poc.balanceofenergy(recipient1address, lwatt))
+      //   "LWATT: ",
+      //   formatEther(await poC.balanceOfEnergy(recipient1Address, LWATT))
       // );
 
       // console.log(
-      //   "nwatt: ",
-      //   formatether(await poc.balanceofenergy(recipient1address, nwatt))
+      //   "NWATT: ",
+      //   formatEther(await poC.balanceOfEnergy(recipient1Address, NWATT))
       // );
 
       // console.log(
-      //   "pwatt: ",
-      //   formatether(await poc.balanceofenergy(recipient1address, pwatt))
+      //   "PWATT: ",
+      //   formatEther(await poC.balanceOfEnergy(recipient1Address, PWATT))
       // );
 
       // console.log(
-      //   "swatt: ",
-      //   formatether(await poc.balanceofenergy(recipient1address, swatt))
+      //   "SWATT: ",
+      //   formatEther(await poC.balanceOfEnergy(recipient1Address, SWATT))
       // );
 
       // console.log(
-      //   "vwatt: ",
-      //   formatether(await poc.balanceofenergy(recipient1address, vwatt))
+      //   "VWATT: ",
+      //   formatEther(await poC.balanceOfEnergy(recipient1Address, VWATT))
       // );
 
       // console.log(
-      //   "watt: ",
-      //   formatether(await poc.balanceof(recipient1address))
+      //   "WATT: ",
+      //   formatEther(await poC.balanceOf(recipient1Address))
       // );
 
-      expect(await poc.lastmilestoneunlocked(recipient1address)).to.equal(8);
+      expect(await poC.lastMilestoneUnlocked(recipient1Address)).to.equal(8);
     });
 
     it("should emit event when unlocking milestones", async function () {
       await expect(
-        poc
+        poC
           .connect(owner)
-          .mint(recipient1address, cwatt, parseether("100000000000"))
+          .mint(recipient1Address, CWATT, parseEther("100000000000"))
       )
-        .to.emit(poc, "milestoneunlocked")
-        .withargs(recipient1address, parseether("10"));
+        .to.emit(poC, "MilestoneUnlocked")
+        .withArgs(recipient1Address, parseEther("10"));
 
       await expect(
-        poc
+        poC
           .connect(owner)
-          .mint(recipient1address, xwatt, parseether("100000000000"))
+          .mint(recipient1Address, XWATT, parseEther("100000000000"))
       )
-        .to.emit(poc, "milestoneunlocked")
-        .withargs(recipient1address, parseether("20"));
+        .to.emit(poC, "MilestoneUnlocked")
+        .withArgs(recipient1Address, parseEther("20"));
 
       await expect(
-        poc
+        poC
           .connect(owner)
-          .mint(recipient1address, lwatt, parseether("100000000000"))
+          .mint(recipient1Address, LWATT, parseEther("100000000000"))
       )
-        .to.emit(poc, "milestoneunlocked")
-        .withargs(recipient1address, parseether("30"));
+        .to.emit(poC, "MilestoneUnlocked")
+        .withArgs(recipient1Address, parseEther("30"));
 
       await expect(
-        poc
+        poC
           .connect(owner)
-          .mint(recipient1address, nwatt, parseether("100000000000"))
+          .mint(recipient1Address, NWATT, parseEther("100000000000"))
       )
-        .to.emit(poc, "milestoneunlocked")
-        .withargs(recipient1address, parseether("40"));
+        .to.emit(poC, "MilestoneUnlocked")
+        .withArgs(recipient1Address, parseEther("40"));
 
       await expect(
-        poc
+        poC
           .connect(owner)
-          .mint(recipient1address, pwatt, parseether("100000000000"))
+          .mint(recipient1Address, PWATT, parseEther("100000000000"))
       )
-        .to.emit(poc, "milestoneunlocked")
-        .withargs(recipient1address, parseether("50"));
+        .to.emit(poC, "MilestoneUnlocked")
+        .withArgs(recipient1Address, parseEther("50"));
 
       await expect(
-        poc
+        poC
           .connect(owner)
-          .mint(recipient1address, swatt, parseether("100000000000"))
+          .mint(recipient1Address, SWATT, parseEther("100000000000"))
       )
-        .to.emit(poc, "milestoneunlocked")
-        .withargs(recipient1address, parseether("60"));
+        .to.emit(poC, "MilestoneUnlocked")
+        .withArgs(recipient1Address, parseEther("60"));
 
       await expect(
-        poc
+        poC
           .connect(owner)
-          .mint(recipient1address, vwatt, parseether("100000000000"))
+          .mint(recipient1Address, VWATT, parseEther("100000000000"))
       )
-        .to.emit(poc, "milestoneunlocked")
-        .withargs(recipient1address, parseether("70"));
+        .to.emit(poC, "MilestoneUnlocked")
+        .withArgs(recipient1Address, parseEther("70"));
     });
   });
 });
