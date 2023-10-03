@@ -6,9 +6,14 @@ import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Ini
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 /// @dev Interface for the activationFunction activation function.
-interface IActivationFunction {
+interface IActivationFunctionSync {
     function activate() external view returns (bool);
 }
+
+interface IActivationFunctionAsync {
+    function activate(uint256 activationFunctionId) external;
+}
+
 
 /// @title NewcoinEncoder
 /// @notice The handler contract that is authorized to mint NeuralTokens and Watts by registering approved ValidationFunctions.
@@ -28,6 +33,7 @@ contract NewcoinEncoder is Initializable, OwnableUpgradeable {
         string context; // Context string
         address addrss; // ENS or address
         uint256 weightInWatt; // Amount of watts to be issued
+        bool isAsync; // Is the activationFunction asynchronous
     }
 
     /// @dev Event emitted when an address is debugged.
@@ -71,7 +77,8 @@ contract NewcoinEncoder is Initializable, OwnableUpgradeable {
         bytes32 _contextId,
         string memory _context,
         address _addrss,
-        uint256 _weightInWatt
+        uint256 _weightInWatt,
+        bool _isAsync
     ) external returns (uint256) {
 
         require(_wattType != WattType.NONE, "Invalid watt type");
@@ -84,7 +91,8 @@ contract NewcoinEncoder is Initializable, OwnableUpgradeable {
             contextId: _contextId,
             context: _context,
             addrss: _addrss,
-            weightInWatt: _weightInWatt
+            weightInWatt: _weightInWatt,
+            isAsync: _isAsync
         });
 
         activationFunctions.push(newActivationFunction);
@@ -112,14 +120,30 @@ contract NewcoinEncoder is Initializable, OwnableUpgradeable {
     function activate(uint256 activationFunctionId) external {
         require(activationFunctions[activationFunctionId].approved, "activationFunction not approved");
         emit DebugAddress(activationFunctions[activationFunctionId].addrss);
-        IActivationFunction af = IActivationFunction(activationFunctions[activationFunctionId].addrss);
-        require(af.activate(), "ActivationFunction condition not met");
 
 
-        uint256 amountToMint = activationFunctions[activationFunctionId].weightInWatt * activationFunctions[activationFunctionId].multiplier;
-        uint8 mintId = uint8(activationFunctions[activationFunctionId].wattType);
+        if (activationFunctions[activationFunctionId].isAsync) {
+            IActivationFunctionAsync af = IActivationFunctionAsync(activationFunctions[activationFunctionId].addrss);
+            af.activate(activationFunctionId);
+        } else {
+            IActivationFunctionSync af = IActivationFunctionSync(activationFunctions[activationFunctionId].addrss);
+            af.activate();
+            require(af.activate(), "ActivationFunction condition not met");
+            uint256 amountToMint = activationFunctions[activationFunctionId].weightInWatt * activationFunctions[activationFunctionId].multiplier;
+            uint8 mintId = uint8(activationFunctions[activationFunctionId].wattType);
+            poC.mint(tx.origin, mintId, amountToMint);
+        }
+    }
 
-        poC.mint(tx.origin, mintId, amountToMint);
+    /// @dev Callback function to mint tokens from asynchronous oracle response.
+    /// @param conditionMet bool for the condition being met 
+    /// @param activationFunctionId the stored id in the ActivationFunction id to register correctly here.
+    function oracleResponse(bool conditionMet, uint256 activationFunctionId) external {
+        if (conditionMet) {
+            uint256 amountToMint = activationFunctions[activationFunctionId].weightInWatt * activationFunctions[activationFunctionId].multiplier;
+            uint8 mintId = uint8(activationFunctions[activationFunctionId].wattType);
+            poC.mint(tx.origin, mintId, amountToMint);
+        }
     }
 }
 

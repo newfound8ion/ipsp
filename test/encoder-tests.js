@@ -72,7 +72,8 @@ describe("Encoder Test", function () {
         contextId,
         context,
         voteActivationFunctionAddress,
-        weightInWatt
+        weightInWatt,
+        false
       );
 
       const receipt = await tx.wait();
@@ -101,7 +102,8 @@ describe("Encoder Test", function () {
         contextId,
         context,
         voteActivationFunctionAddress,
-        weightInWatt
+        weightInWatt,
+        false
       );
       const receipt = await tx.wait();
 
@@ -134,7 +136,8 @@ describe("Encoder Test", function () {
         contextId,
         context,
         voteActivationFunctionAddress,
-        weightInWatt
+        weightInWatt,
+        false
       );
       const receipt = await tx.wait();
 
@@ -165,7 +168,8 @@ describe("Encoder Test", function () {
         contextId,
         context,
         voteActivationFunctionAddress,
-        weightInWatt
+        weightInWatt,
+        false
       );
 
       const receipt = await tx.wait();
@@ -204,7 +208,8 @@ describe("Encoder Test", function () {
         contextId,
         context,
         voteActivationFunctionAddress,
-        weightInWatt
+        weightInWatt,
+        false
       );
 
       const receipt = await tx.wait();
@@ -243,7 +248,8 @@ describe("Encoder Test", function () {
         contextId,
         context,
         voteActivationFunctionAddress,
-        weightInWatt
+        weightInWatt,
+        false
       );
       const receipt = await tx.wait();
 
@@ -279,7 +285,8 @@ describe("Encoder Test", function () {
         contextId,
         context,
         voteActivationFunctionAddress,
-        weightInWatt
+        weightInWatt,
+        false
       );
       const receipt = await tx.wait();
 
