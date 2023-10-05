@@ -52,7 +52,7 @@ contract GuildPassport is IActivationFunctionAsync, ChainlinkClient, ConfirmedOw
         sendOperatorRequest(req, fee);
         
         // Store the pending activationFunctionId for this requester
-        pendingActivations[msg.sender] = _activationFunctionId;
+        pendingActivations[msg.sender] = activationFunctionId;
     }
 
     bool public response;
@@ -60,9 +60,8 @@ contract GuildPassport is IActivationFunctionAsync, ChainlinkClient, ConfirmedOw
     // Receive the result from the Chainlink oracle
     event RequestFulfilled(address indexed requester);
     function fulfill(bytes32 requestId, bool data) public recordChainlinkFulfillment(requestId) {
-        address requester = getAddressFromRequest(requestId); // Assume a function to get address from requestId
-        passportHolders[requester] = data;
-        emit RequestFulfilled(requester);
+        passportHolders[msg.sender] = data;
+        emit RequestFulfilled(msg.sender);
     }
 
     // Update oracle address
@@ -104,9 +103,5 @@ contract GuildPassport is IActivationFunctionAsync, ChainlinkClient, ConfirmedOw
     function activate(uint256 _activationFunctionId) external {
         require(passportHolders[msg.sender], "Not a guild member and passport holder");
         ICallback(msg.sender).oracleResponse(true, _activationFunctionId);
-    }
-
-    function requestApproval(uint256 _activationFunctionId) external {
-        request(_activationFunctionId);
     }
 }
