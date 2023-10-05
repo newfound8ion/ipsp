@@ -6,7 +6,7 @@ interface VotingContract {
     function addressTotalVotesVerified() external view returns (bool);
 }
 
-contract VoteChecker {
+contract JokeVoteChecker {
 
     // Address of the contract you want to interact with
     address public votingContractAddress;

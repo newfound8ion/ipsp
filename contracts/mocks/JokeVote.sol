@@ -22,10 +22,8 @@ contract JokeVote {
     }
 
     // Function to check if an address has verified votes
-    function addressTotalVotesVerified(address _address) external view returns (bool) {
+    function addressTotalVotesVerified() external view returns (bool) {
         // Return whether the address has voted
-        return hasVoted[_address];
-
+        return hasVoted[tx.origin];
     }
 }
-

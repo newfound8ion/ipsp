@@ -13,6 +13,10 @@ describe("JokeVote Contract", function () {
     JokeVote = await ethers.getContractFactory("JokeVote");
     [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
     jokeVote = await JokeVote.deploy();
+
+    JokeVoteChecker = await ethers.getContractFactory("JokeVoteChecker");
+
+    jokeVoteChecker = await JokeVoteChecker.deploy(jokeVote.address);
   });
 
   describe("Vote Casting and Verification", function () {
@@ -30,9 +34,7 @@ describe("JokeVote Contract", function () {
 
     it("Should verify if an address has voted using addressTotalVotesVerified", async function () {
       await jokeVote.connect(addr1).castVote();
-      expect(
-        await jokeVote.addressTotalVotesVerified(addr1.getAddress())
-      ).to.equal(true);
+      expect(await jokeVoteChecker.connect(addr1).activate()).to.equal(true);
     });
 
     it("Should return false for an address that has not voted", async function () {
