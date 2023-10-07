@@ -4,6 +4,10 @@ const { ethers } = require("hardhat");
 describe("JokeVote Contract", function () {
   let JokeVote;
   let jokeVote;
+  let JokeVoteChecker;
+  let jokeVoteChecker;
+  let EnergyMock;
+  let energyMock;
   let owner;
   let addr1;
   let addr2;
@@ -14,15 +18,23 @@ describe("JokeVote Contract", function () {
     [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
     jokeVote = await JokeVote.deploy();
 
+    // Deploy a mock Energy contract
+    EnergyMock = await ethers.getContractFactory("EnergyMinterMock");
+    energyMock = await EnergyMock.deploy();
+
     JokeVoteChecker = await ethers.getContractFactory("JokeVoteChecker");
 
-    jokeVoteChecker = await JokeVoteChecker.deploy(jokeVote.address);
+    // Use the address of the mock Energy contract
+    jokeVoteChecker = await JokeVoteChecker.deploy(
+      jokeVote.address,
+      energyMock.address
+    );
   });
 
   describe("Vote Casting and Verification", function () {
     it("Should allow an address to vote", async function () {
       await jokeVote.connect(addr1).castVote();
-      expect(await jokeVote.hasVoted(addr1.getAddress())).to.equal(true);
+      expect(await jokeVote.hasVoted(addr1.address)).to.equal(true);
     });
 
     it("Should not allow an address to vote more than once", async function () {
@@ -32,15 +44,28 @@ describe("JokeVote Contract", function () {
       );
     });
 
-    it("Should verify if an address has voted using addressTotalVotesVerified", async function () {
-      await jokeVote.connect(addr1).castVote();
-      expect(await jokeVoteChecker.connect(addr1).activate()).to.equal(true);
+    it("Should revert for an address that has not voted", async function () {
+      await expect(
+        jokeVoteChecker.connect(addr2).activate()
+      ).to.be.revertedWith("Has not voted");
     });
 
-    it("Should return false for an address that has not voted", async function () {
-      expect(
-        await jokeVote.addressTotalVotesVerified(addr2.getAddress())
-      ).to.equal(false);
+    it("Should revert if the address has insufficient Watts", async function () {
+      await jokeVote.connect(addr1).castVote();
+      await energyMock.connect(addr1).mint(addr1.address, 1, 5);
+      await expect(
+        jokeVoteChecker.connect(addr1).activate()
+      ).to.be.revertedWith("Insufficient Watts");
+    });
+
+    it("Should allow activation if the address has sufficient Watts", async function () {
+      await jokeVote.connect(addr1).castVote();
+      await energyMock.connect(addr1).mint(addr1.address, 1, 15);
+
+      await expect(jokeVoteChecker.connect(addr1).activate()).to.emit(
+        jokeVoteChecker,
+        "Activated"
+      );
     });
   });
 });

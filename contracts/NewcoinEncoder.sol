@@ -5,11 +5,12 @@ import "./mocks/EnergyMinterMock.sol";
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
-/// @dev Interface for the activationFunction activation function.
+/// @dev Interface for the synchronous (cross chain call) typed activation functions
 interface IActivationFunctionSync {
     function activate() external view returns (bool);
 }
 
+/// @dev Interface for the asynchronous (oracle based) typed activation functions
 interface IActivationFunctionAsync {
     function activate(uint256 activationFunctionId) external;
 }
