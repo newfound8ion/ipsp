@@ -77,7 +77,7 @@ By integrating these features, Newcoin EVM offers a comprehensive solution for r
 
 The Newcoin EVM (Ethereum Virtual Machine) is a meticulously designed system that seamlessly integrates cryptographic techniques, machine learning models, and decentralized network principles. This architecture is underpinned by the project's vision to foster creativity, robustness, and scalability in a decentralized environment. Here's an in-depth look into its architectural components:
 
-![Architecture](newcoin-architecture.png)
+![Architecture]([newcoin-architecture.png](https://github.com/newfound8ion/newcoin-evm/raw/main/newcoin-architecture.png))
 
 ## 1. **Core Components**
 
