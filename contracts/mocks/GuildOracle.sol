@@ -53,7 +53,7 @@ contract GuildPassport is
         // Concatenate the base URL with the dynamic address
         string memory fullUrl = string(
             abi.encodePacked(
-                "https://api.guild.xyz/v2/guilds/16389/members/0x",
+                "https://api.guild.xyz/v2/guilds/19282/members/0x",
                 stringAddress
             )
         );
@@ -71,7 +71,7 @@ contract GuildPassport is
         req.add("contact", "derek_linkwellnodes.io");
 
         // PROCESS THE RESULT
-        req.add("path", "20,access");
+        req.add("path", "0,access");
 
         bytes32 requestId = sendOperatorRequest(req, fee);
         requesters[requestId] = msg.sender;
