@@ -20,7 +20,6 @@ interface IActivationFunctionAsync {
 /// @notice The handler contract that is authorized to mint NeuralTokens and Watts by registering approved ValidationFunctions.
 contract NewcoinEncoder is Initializable, OwnableUpgradeable {
 
-
     /// @dev Enum to represent the type of Watt.
     enum WattType { NONE, CWATT, XWATT, LWATT, NWATT, PWATT, SWATT, VWATT }
 

@@ -2,7 +2,7 @@ const { ethers, upgrades, network } = require("hardhat");
 
 // Deploy the SafeEnergy contract or upgrade it if it already exists
 async function main() {
-  const Contract = await ethers.getContractFactory("SafeEnergy");
+  const Contract = await ethers.getContractFactory("PoC");
   const { config } = network;
   const contractAddress = config.contract;
 
