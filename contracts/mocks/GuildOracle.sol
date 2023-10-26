@@ -15,7 +15,7 @@ interface ICallback {
     ) external;
 }
 
-contract GuildPassport is
+contract GuildPassportAF is
     IActivationFunctionAsync,
     ChainlinkClient,
     ConfirmedOwner
@@ -62,7 +62,7 @@ contract GuildPassport is
 
         // DEFINE THE REQUEST PARAMETERS
         req.add("method", "GET");
-        req.add("url", fullUrl); // Directly use the fullUrl since it's already a string
+        req.add("url", fullUrl);
         req.add(
             "headers",
             '["content-type", "application/json", "set-cookie", "sid=14A52"]'
