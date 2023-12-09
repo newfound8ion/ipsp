@@ -181,6 +181,7 @@ Expand the functionality of the Proof of Creativity contracts by contributing ne
     /// @param _multiplier The multiplier value.
     /// @param _contextId The unique generated ID.
     /// @param _context The context string.
+    /// @param _description The description of the Activation Function.	
     /// @param _addrss The ENS or address of the Activation Function
     /// @param _weightInWatt The amount of watts the issuer has.
 	    /// @return The ID of the registered activationFunction.
@@ -189,6 +190,7 @@ Expand the functionality of the Proof of Creativity contracts by contributing ne
         uint256 _multiplier,
         bytes32 _contextId,
         string memory _context,
+	string memory _description,
         address _addrss,
         uint256 _weightInWatt
     ) external returns (uint256) {
