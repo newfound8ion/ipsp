@@ -1,18 +1,24 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.19;
 
-import "./mocks/EnergyMinterMock.sol";
+import "./afs/EnergyMinterMock.sol";
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 /// @dev Interface for the synchronous (cross chain call) typed activation functions
-interface IActivationFunctionSync {
-    function activate() external view returns (bool);
-}
-
-/// @dev Interface for the asynchronous (oracle based) typed activation functions
+// Interface for asynchronous activation functions
 interface IActivationFunctionAsync {
     function activate(uint256 activationFunctionId) external;
+}
+
+// Interface for synchronous activation functions with an amount
+interface IActivationFunctionSyncWithAmount {
+    function activate() external returns (bool, uint256);
+}
+
+// Original interface for synchronous activation functions (without an amount)
+interface IActivationFunctionSync {
+    function activate() external returns (bool);
 }
 
 /// @title NewcoinEncoder
@@ -41,6 +47,7 @@ contract NewcoinEncoder is Initializable, OwnableUpgradeable {
         address addrss; // ENS or address
         uint256 weightInWatt; // Amount of watts to be issued
         bool isAsync; // Is the activationFunction asynchronous
+        bool dynamicAmount; // Does it retrn a dynamic amount
     }
 
     /// @dev Event emitted when an address is debugged.
@@ -89,7 +96,8 @@ contract NewcoinEncoder is Initializable, OwnableUpgradeable {
         string memory _context,
         address _addrss,
         uint256 _weightInWatt,
-        bool _isAsync
+        bool _isAsync,
+        bool _dynamicAmount
     ) external returns (uint256) {
         require(_wattType != WattType.NONE, "Invalid watt type");
 
@@ -102,7 +110,8 @@ contract NewcoinEncoder is Initializable, OwnableUpgradeable {
             context: _context,
             addrss: _addrss,
             weightInWatt: _weightInWatt,
-            isAsync: _isAsync
+            isAsync: _isAsync,
+            dynamicAmount: _dynamicAmount
         });
 
         activationFunctions.push(newActivationFunction);
@@ -153,22 +162,29 @@ contract NewcoinEncoder is Initializable, OwnableUpgradeable {
 
         uint256 amountToMint;
         if (af.isAsync) {
-            // Handle asynchronous activation function
             IActivationFunctionAsync asyncAF = IActivationFunctionAsync(
                 af.addrss
             );
             asyncAF.activate(activationFunctionId);
         } else {
-            // Handle synchronous activation function
-            IActivationFunctionSync syncAF = IActivationFunctionSync(af.addrss);
-            (bool success, uint256 returnedAmount) = syncAF.activate();
-            require(success, "ActivationFunction condition not met");
-
-            if (returnedAmount > 0) {
-                // Use the amount returned by the sync activation function
+            // Check if the synchronous activation function returns an amount
+            if (af.dynamicAmount) {
+                IActivationFunctionSyncWithAmount syncAFWithAmount = IActivationFunctionSyncWithAmount(
+                        af.addrss
+                    );
+                (bool success, uint256 returnedAmount) = syncAFWithAmount
+                    .activate();
+                require(success, "ActivationFunction condition not met");
                 amountToMint = returnedAmount;
             } else {
-                // Fallback to the existing logic
+                IActivationFunctionSync syncAF = IActivationFunctionSync(
+                    af.addrss
+                );
+                require(
+                    syncAF.activate(),
+                    "ActivationFunction condition not met"
+                );
+                // Use default logic to determine the amount
                 amountToMint = af.weightInWatt * af.multiplier;
             }
         }
