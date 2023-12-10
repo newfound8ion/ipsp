@@ -13,7 +13,7 @@ interface IActivationFunctionAsync {
 
 // Interface for synchronous activation functions with an amount
 interface IActivationFunctionSyncWithAmount {
-    function activate() external returns (bool, uint256);
+    function activate(uint256) external returns (uint256);
 }
 
 // Original interface for synchronous activation functions (without an amount)
@@ -150,7 +150,8 @@ contract NewcoinEncoder is Initializable, OwnableUpgradeable {
 
     function activate(
         uint256 activationFunctionId,
-        address recipient
+        address recipient,
+        uint256 dynamicAmount
     ) external {
         if (recipient == address(0)) {
             recipient = tx.origin;
@@ -172,9 +173,9 @@ contract NewcoinEncoder is Initializable, OwnableUpgradeable {
                 IActivationFunctionSyncWithAmount syncAFWithAmount = IActivationFunctionSyncWithAmount(
                         af.addrss
                     );
-                (bool success, uint256 returnedAmount) = syncAFWithAmount
-                    .activate();
-                require(success, "ActivationFunction condition not met");
+                uint256 returnedAmount = syncAFWithAmount.activate(
+                    dynamicAmount
+                );
                 amountToMint = returnedAmount;
             } else {
                 IActivationFunctionSync syncAF = IActivationFunctionSync(

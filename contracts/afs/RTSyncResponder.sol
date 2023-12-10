@@ -10,7 +10,7 @@ contract NTSyncResponder {
     }
 
     function activate(uint256 amountToMint) external view returns (uint256) {
-        require(msg.sender == authorizedAddress, "Unauthorized address");
+        require(tx.origin == authorizedAddress, "Unauthorized address");
         return amountToMint;
     }
 

@@ -11,6 +11,9 @@ describe("Encoder Test", function () {
   let voteActivationFunction;
   let voteActivationFunctionAddress;
 
+  let NTSyncActivationFunction;
+  let NTSyncActivationFunctionAddress;
+
   let deployerAddress;
   let user1Address;
   let user2Address;
@@ -40,6 +43,14 @@ describe("Encoder Test", function () {
     );
     voteActivationFunction = await VoteActivationFunction.deploy(2);
     voteActivationFunctionAddress = voteActivationFunction.address;
+
+    const nTSyncActivationFunction = await ethers.getContractFactory(
+      "NTSyncResponder"
+    );
+    NTSyncActivationFunction = await nTSyncActivationFunction.deploy(
+      deployerAddress
+    );
+    NTSyncActivationFunctionAddress = NTSyncActivationFunction.address;
 
     await contract.deployed();
   });
@@ -151,7 +162,7 @@ describe("Encoder Test", function () {
       const activationFunctionId = event?.args ? event.args[0] : null;
 
       await expect(
-        contract.activate(activationFunctionId, deployerAddress)
+        contract.activate(activationFunctionId, deployerAddress, 0)
       ).to.be.revertedWith("ActivationFunction not approved");
     });
 
@@ -193,7 +204,7 @@ describe("Encoder Test", function () {
       await voteActivationFunction.vote();
       await voteActivationFunction.vote();
 
-      await contract.activate(activationFunctionId, deployerAddress);
+      await contract.activate(activationFunctionId, deployerAddress, 0);
     });
 
     it("should fail activation without approval even if vote requirements are met", async function () {
@@ -233,7 +244,7 @@ describe("Encoder Test", function () {
       await voteActivationFunction.vote();
 
       await expect(
-        contract.activate(activationFunctionId, deployerAddress)
+        contract.activate(activationFunctionId, deployerAddress, 0)
       ).to.be.revertedWith("ActivationFunction not approved");
     });
 
@@ -315,7 +326,7 @@ describe("Encoder Test", function () {
 
       const canMint = await contract.canMint(activationFunctionId);
       if (canMint) {
-        await contract.activate(activationFunctionId, deployerAddress);
+        await contract.activate(activationFunctionId, deployerAddress, 0);
       }
 
       const balance = await energyMinterMock.balanceOfEnergy(
@@ -323,6 +334,55 @@ describe("Encoder Test", function () {
         1
       );
       expect(balance).to.equal(weightInWatt * multiplier);
+    });
+
+    it("should mint watts with dynamic amount after activation function approval", async function () {
+      const multiplier = 2;
+      const contextId = ethers.utils.keccak256(
+        ethers.utils.defaultAbiCoder.encode(
+          ["address", "uint256"],
+          [deployerAddress, Math.floor(Date.now() / 1000)]
+        )
+      );
+      const context = "Dynamic Amount Test Context";
+      const weightInWatt = 100;
+
+      // Registering activation function with the final parameter set to true
+      const tx = await contract.registerActivationFunction(
+        1,
+        multiplier,
+        contextId,
+        context,
+        NTSyncActivationFunctionAddress,
+        weightInWatt,
+        false,
+        true // Setting dynamic amount to true
+      );
+      const receipt = await tx.wait();
+
+      const event = receipt.events?.find(
+        (e) => e.event === "ActivationFunctionRegistered"
+      );
+
+      if (!event || !event.args)
+        throw new Error(
+          "ActivationFunctionRegistered event not found or missing arguments"
+        );
+      const activationFunctionId = event.args[0];
+
+      await contract.approveActivationFunction(activationFunctionId);
+
+      const canMint = await contract.canMint(activationFunctionId);
+      if (canMint) {
+        await contract.activate(activationFunctionId, deployerAddress, 10);
+      }
+
+      // Checking the balance to assert the minting occurred with dynamic amount
+      const balance = await energyMinterMock.balanceOfEnergy(
+        deployerAddress,
+        1
+      );
+      expect(balance).to.equal(10);
     });
   });
 });
