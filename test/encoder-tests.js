@@ -384,5 +384,61 @@ describe("Encoder Test", function () {
       );
       expect(balance).to.equal(10);
     });
+
+    it("should register, approve, and bulk mint with AddressListActivationFunction", async function () {
+      const AddressListActivationFunction = await ethers.getContractFactory(
+        "AddressListActivationFunction"
+      );
+      const addressListActivationFunction =
+        await AddressListActivationFunction.deploy();
+      const addressListActivationFunctionAddress =
+        addressListActivationFunction.address;
+
+      // Approve a list of addresses in the activation function
+      await addressListActivationFunction.approveAddresses([
+        user1Address,
+        user2Address,
+      ]);
+
+      // Register the activation function in NewcoinEncoder
+      let tx = await contract.registerActivationFunction(
+        1, // WattTyp
+        1, // Multiplier
+        ethers.utils.formatBytes32String("test"), // contextId
+        "Test Context", // context
+        addressListActivationFunctionAddress,
+        100, // weightInWatt
+        false, // isAsync
+        false // dynamicAmount
+      );
+      let receipt = await tx.wait();
+      let event = receipt.events?.find(
+        (e) => e.event === "ActivationFunctionRegistered"
+      );
+      let activationFunctionId = event.args[0];
+
+      // Approve the activation function
+      await contract.approveActivationFunction(activationFunctionId);
+
+      // Perform bulk mint
+      await contract.bulkMintToAddresses(
+        [activationFunctionId, activationFunctionId],
+        [user1Address, user2Address],
+        [50, 75] // Amounts to mint
+      );
+
+      // Check balances
+      let balanceUser1 = await energyMinterMock.balanceOfEnergy(
+        user1Address,
+        1
+      );
+      let balanceUser2 = await energyMinterMock.balanceOfEnergy(
+        user2Address,
+        1
+      );
+
+      expect(balanceUser1).to.equal(50);
+      expect(balanceUser2).to.equal(75);
+    });
   });
 });
