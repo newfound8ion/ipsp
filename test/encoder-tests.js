@@ -1,6 +1,17 @@
 const { expect } = require("chai");
 const { ethers, upgrades } = require("hardhat");
 
+const WattType = {
+  NONE: 0,
+  CWATT: 1,
+  XWATT: 2,
+  LWATT: 3,
+  NWATT: 4,
+  PWATT: 5,
+  SWATT: 6,
+  VWATT: 7,
+};
+
 describe("Encoder Test", function () {
   let poC;
 
@@ -439,6 +450,61 @@ describe("Encoder Test", function () {
 
       expect(balanceUser1).to.equal(50);
       expect(balanceUser2).to.equal(75);
+    });
+
+    it("should mint various NTs to achieve a total of 300 Watts", async function () {
+      const amountsToMint = {
+        NWATT: 20, // 3x
+        PWATT: 20, // 5x
+        XWATT: 14, // 10x
+      };
+      let totalWatts = 0;
+
+      for (const wattType in amountsToMint) {
+        const wattTypeValue = WattType[wattType]; // Convert string to enum value
+        const amount = amountsToMint[wattType];
+        const multiplier =
+          wattTypeValue === WattType.NWATT
+            ? 3
+            : wattTypeValue === WattType.PWATT
+            ? 5
+            : 10; // 10x for XWATT
+
+        const AddressListActivationFunction = await ethers.getContractFactory(
+          "AddressListActivationFunction"
+        );
+        const addressListActivationFunction =
+          await AddressListActivationFunction.deploy();
+        await addressListActivationFunction.approveAddresses([user1Address]);
+
+        let tx = await contract.registerActivationFunction(
+          wattTypeValue,
+          multiplier,
+          ethers.utils.formatBytes32String("test-" + wattType),
+          "Test Context " + wattType,
+          addressListActivationFunction.address,
+          amount,
+          false, // isAsync
+          false // dynamicAmount
+        );
+        let receipt = await tx.wait();
+        let activationFunctionId = receipt.events?.find(
+          (e) => e.event === "ActivationFunctionRegistered"
+        ).args[0];
+
+        await contract.approveActivationFunction(activationFunctionId);
+
+        await contract.bulkMintToAddresses(
+          [activationFunctionId],
+          [user1Address],
+          [amount]
+        );
+
+        totalWatts += amount * multiplier;
+      }
+
+      let totalWattsBalance = await energyMinterMock.totalWatts(user1Address);
+      expect(totalWattsBalance).to.equal(300);
     });
   });
 });
