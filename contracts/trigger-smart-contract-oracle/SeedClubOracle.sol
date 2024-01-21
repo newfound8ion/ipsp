@@ -15,7 +15,7 @@ interface ICallback {
     ) external;
 }
 
-contract CyberConnectAF is
+contract SeedClubAF is
     IActivationFunctionAsync,
     ChainlinkClient,
     ConfirmedOwner
@@ -53,7 +53,7 @@ contract CyberConnectAF is
         // Concatenate the base URL with the dynamic address
         string memory fullUrl = string(
             abi.encodePacked(
-                "https://api.guild.xyz/v2/guilds/2893/members/0x",
+                "https://api.guild.xyz/v2/guilds/1608/members/0x",
                 stringAddress
             )
         );
@@ -71,7 +71,7 @@ contract CyberConnectAF is
         req.add("contact", "derek_linkwellnodes.io");
 
         // PROCESS THE RESULT
-        req.add("path", "0,access");
+        req.add("path", "2,access");
 
         bytes32 requestId = sendOperatorRequest(req, fee);
         requesters[requestId] = msg.sender;
@@ -164,7 +164,7 @@ contract CyberConnectAF is
     function activate(uint256 _activationFunctionId) external {
         require(
             passportHolders[tx.origin],
-            "Not a guild Cyber Connect Member with the right role"
+            "Not a guild seedClub member with the right role"
         );
         ICallback(msg.sender).oracleResponse(true, _activationFunctionId);
     }

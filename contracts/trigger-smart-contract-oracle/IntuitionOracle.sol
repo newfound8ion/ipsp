@@ -15,7 +15,7 @@ interface ICallback {
     ) external;
 }
 
-contract CyberConnectAF is
+contract IntuitionAF is
     IActivationFunctionAsync,
     ChainlinkClient,
     ConfirmedOwner
@@ -53,7 +53,7 @@ contract CyberConnectAF is
         // Concatenate the base URL with the dynamic address
         string memory fullUrl = string(
             abi.encodePacked(
-                "https://api.guild.xyz/v2/guilds/2893/members/0x",
+                "https://api.guild.xyz/v2/guilds/16096/members/0x",
                 stringAddress
             )
         );
@@ -62,7 +62,7 @@ contract CyberConnectAF is
 
         // DEFINE THE REQUEST PARAMETERS
         req.add("method", "GET");
-        req.add("url", fullUrl);
+        req.add("url", fullUrl); // Directly use the fullUrl since it's already a string
         req.add(
             "headers",
             '["content-type", "application/json", "set-cookie", "sid=14A52"]'
@@ -162,10 +162,7 @@ contract CyberConnectAF is
     }
 
     function activate(uint256 _activationFunctionId) external {
-        require(
-            passportHolders[tx.origin],
-            "Not a guild Cyber Connect Member with the right role"
-        );
+        require(passportHolders[tx.origin], "Not a guild and intuition member");
         ICallback(msg.sender).oracleResponse(true, _activationFunctionId);
     }
 }
