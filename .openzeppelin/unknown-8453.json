@@ -1,0 +1,67 @@
+{
+  "manifestVersion": "3.2",
+  "admin": {
+    "address": "0x7726FF2842315E8D677d49Fcad371ce416381311",
+    "txHash": "0x3d20c37d089980dd45e69d49decf52e25a7e10419b44f91bbe9955b33ccef669"
+  },
+  "proxies": [
+    {
+      "address": "0xe71f80fB7BafDcDBA20E89E2dC9356CB86E502BD",
+      "txHash": "0xf92b7b71980f0060a34828879fdfb8cfe1426282c3d3ebd1a55bd48675b2960c",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "222d049d51cc6b1b597a69a0da5bdb37255acfda918794740694d096f59b4d46": {
+      "address": "0xABB26cD2d95Aea0d3EA247eedc9Ca17830fD252C",
+      "txHash": "0x203550b74b116a715b4c2dd611957a8ac3633d241589623a417d55c012ff74b1",
+      "layout": {
+        "solcVersion": "0.8.19",
+        "storage": [
+          {
+            "label": "_pointsBalances",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "ImmutablePointsBase",
+            "src": "contracts/pointsBase.sol:16"
+          },
+          {
+            "label": "activationFunctions",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_mapping(t_uint256,t_address)",
+            "contract": "ImmutablePointsBase",
+            "src": "contracts/pointsBase.sol:17"
+          },
+          {
+            "label": "owner",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "ImmutablePointsBase",
+            "src": "contracts/pointsBase.sol:18"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_address)": {
+            "label": "mapping(uint256 => address)",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        }
+      }
+    }
+  }
+}
