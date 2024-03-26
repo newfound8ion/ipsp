@@ -62,17 +62,17 @@ module.exports = {
         : [],
 
       IWATT_contract: "0xF19579bf280389618F6092034C052F2bF96FfD24",
-      PAWATT_contract: "",
+      PAWATT_contract: "0x7EC2d2aa04A8FCB3e1837273C1199b7017757074",
 
-      CWATT_contract: "",
-      DWATT_contract: "",
-      EWATT_contract: "",
+      CWATT_contract: "0x42968391b17Ce030c40F8D5B2e81f12189185f03",
+      DWATT_contract: "0xA97F060E6211DF0963DaA19837FDc52c858488BF",
+      EWATT_contract: "0x97f700CC431d05f9Bb544D7ac6c7b91fb1cE0e3E",
 
-      PWATT_contract: "",
-      NWATT_contract: "",
-      XWATT_contract: "",
-      LWATT_contract: "",
-      POWATT_contract: "",
+      PWATT_contract: "0x616eA6D7B5a1621b70437d0e2284c0BeDBB019D3",
+      NWATT_contract: "0x875Ef9a6f3658A24446b1d1bC6a3c6A50CFb24Ba",
+      XWATT_contract: "0xfbb2DFEaF855d71104E83d8b39f9E2820A568b2c",
+      LWATT_contract: "0x34BCA9A65b0A687a3802a923f8e093666FfCe3a0",
+      POWATT_contract: "0x8a31BED09c8873d2C77B46C7FC25c13C8A2bD5bC",
     },
     optimism: {
       url: process.env.OPTIMISM_URL || "",
@@ -81,17 +81,17 @@ module.exports = {
         : [],
 
       IWATT_contract: "0xF19579bf280389618F6092034C052F2bF96FfD24",
-      PAWATT_contract: "",
+      PAWATT_contract: "0xABB26cD2d95Aea0d3EA247eedc9Ca17830fD252C",
 
-      CWATT_contract: "",
-      DWATT_contract: "",
-      EWATT_contract: "",
+      CWATT_contract: "0x7726FF2842315E8D677d49Fcad371ce416381311",
+      DWATT_contract: "0xe71f80fB7BafDcDBA20E89E2dC9356CB86E502BD",
+      EWATT_contract: "0x7EC2d2aa04A8FCB3e1837273C1199b7017757074",
 
-      PWATT_contract: "",
-      NWATT_contract: "",
-      XWATT_contract: "",
-      LWATT_contract: "",
-      POWATT_contract: "",
+      PWATT_contract: "0x42968391b17Ce030c40F8D5B2e81f12189185f03",
+      NWATT_contract: "0xA97F060E6211DF0963DaA19837FDc52c858488BF",
+      XWATT_contract: "0x97f700CC431d05f9Bb544D7ac6c7b91fb1cE0e3E",
+      LWATT_contract: "0x616eA6D7B5a1621b70437d0e2284c0BeDBB019D3",
+      POWATT_contract: "0x875Ef9a6f3658A24446b1d1bC6a3c6A50CFb24Ba",
     },
     mumbai: {
       url: process.env.MUMBAI_URL || "",
