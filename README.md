@@ -39,3 +39,33 @@ Points can be aggregated and processed using decentralized compute networks, ena
 function getPointsBalance(address account) public view returns (uint256) {
     return _pointsBalances[account];
 }
+```
+
+### Deployment process
+
+Available networks: polygon, base, optimism
+
+#### Configure developer environment
+
+Setup Node and install requirements
+```bash
+nvm install v18
+yarn install
+```
+
+Init network creds (for example for polygon)
+```bash
+export POLYGON_URL='...'
+export PROD_PRIVATE_KEY='...'
+```
+
+#### Run deployment script
+
+```bash
+npx hardhat run scripts/deploy-points.js --network polygon
+```
+
+In console you will see addresses of the contracts where code deployed like
+```
+Contract deployed to: 0x.....
+```

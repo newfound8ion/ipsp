@@ -17,7 +17,7 @@ contract ImmutablePointsBase is IImmutablePoints {
     mapping(uint256 => address) public activationFunctions; // Mapping of activation function IDs to contract addresses
     address owner;
 
-    constructor() {
+    function initialize() public {
         owner = msg.sender;
     }
 
@@ -65,18 +65,18 @@ contract ImmutablePointsBase is IImmutablePoints {
 }
 
 // Custom Immutable Points Contract
-contract CustomImmutablePoints is ImmutablePointsBase {
-    // Custom logic for specific triggers or additional features
+// contract CustomImmutablePoints is ImmutablePointsBase {
+//     // Custom logic for specific triggers or additional features
 
-    function triggerPointsIssuance(
-        uint256 activationFunctionId,
-        address recipient,
-        uint256 amount
-    ) public {
-        // Custom logic before issuing points
-        issuePointsWithActivation(activationFunctionId, recipient, amount);
-        // Additional custom logic after issuing points
-    }
+//     function triggerPointsIssuance(
+//         uint256 activationFunctionId,
+//         address recipient,
+//         uint256 amount
+//     ) public {
+//         // Custom logic before issuing points
+//         issuePointsWithActivation(activationFunctionId, recipient, amount);
+//         // Additional custom logic after issuing points
+//     }
 
-    // Additional custom logic as required by specific projects
-}
+//     // Additional custom logic as required by specific projects
+// }

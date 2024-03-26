@@ -41,15 +41,57 @@ module.exports = {
       accounts: process.env.PROD_PRIVATE_KEY
         ? [process.env.PROD_PRIVATE_KEY]
         : [],
-      contract: "0x935e8F7EAce4DD560b2A32918A148A4F5218016c",
-      externalScorerContract: "0xcAe74F105A2d1FE0cdE72A48648ad6d4185Dd10f",
-      powerUpScorerContract: "0xb081cB4127bA08C7493Ba8e34A4f6292d0c27E89",
-      sparksContract: "0x5e01157f65E225b68b2FdBce40D9E7020a978Fc2",
-      inviteLinksContract: "0x93Fa3D0d567fEb7b6EeF9323Ed6399ce53f981ba",
-      profileContract: "0xe9fE474d829F55C3eaf23fFbAE454c8375C51551",
-      wethContract: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
-      salesRecipient: "0x919a9DD276D09F089425a16Df5cf399eb0d47E4e",
-      externalBadgeSignerAddress: "0x9E8F10d3787FD1cA6340b70d6Fa04558DE13B284",
+      
+      IWATT_contract: "0xe71f80fB7BafDcDBA20E89E2dC9356CB86E502BD",
+      PAWATT_contract: "0x7EC2d2aa04A8FCB3e1837273C1199b7017757074",
+
+      CWATT_contract: "0xA97F060E6211DF0963DaA19837FDc52c858488BF",
+      DWATT_contract: "0x97f700CC431d05f9Bb544D7ac6c7b91fb1cE0e3E",
+      EWATT_contract: "0x616eA6D7B5a1621b70437d0e2284c0BeDBB019D3",
+
+      PWATT_contract: "0x875Ef9a6f3658A24446b1d1bC6a3c6A50CFb24Ba",
+      NWATT_contract: "0xfbb2DFEaF855d71104E83d8b39f9E2820A568b2c",
+      XWATT_contract: "0x34BCA9A65b0A687a3802a923f8e093666FfCe3a0",
+      LWATT_contract: "0x8a31BED09c8873d2C77B46C7FC25c13C8A2bD5bC",
+      POWATT_contract: "0x05E15237C021EE379b0513850447547538Fc699e",
+    },
+    "base-mainnet": {
+      url: process.env.BASE_URL || "",
+      accounts: process.env.PROD_PRIVATE_KEY
+        ? [process.env.PROD_PRIVATE_KEY]
+        : [],
+
+      IWATT_contract: "0xF19579bf280389618F6092034C052F2bF96FfD24",
+      PAWATT_contract: "0x7EC2d2aa04A8FCB3e1837273C1199b7017757074",
+
+      CWATT_contract: "0x42968391b17Ce030c40F8D5B2e81f12189185f03",
+      DWATT_contract: "0xA97F060E6211DF0963DaA19837FDc52c858488BF",
+      EWATT_contract: "0x97f700CC431d05f9Bb544D7ac6c7b91fb1cE0e3E",
+
+      PWATT_contract: "0x616eA6D7B5a1621b70437d0e2284c0BeDBB019D3",
+      NWATT_contract: "0x875Ef9a6f3658A24446b1d1bC6a3c6A50CFb24Ba",
+      XWATT_contract: "0xfbb2DFEaF855d71104E83d8b39f9E2820A568b2c",
+      LWATT_contract: "0x34BCA9A65b0A687a3802a923f8e093666FfCe3a0",
+      POWATT_contract: "0x8a31BED09c8873d2C77B46C7FC25c13C8A2bD5bC",
+    },
+    optimism: {
+      url: process.env.OPTIMISM_URL || "",
+      accounts: process.env.PROD_PRIVATE_KEY
+        ? [process.env.PROD_PRIVATE_KEY]
+        : [],
+
+      IWATT_contract: "0xF19579bf280389618F6092034C052F2bF96FfD24",
+      PAWATT_contract: "0xABB26cD2d95Aea0d3EA247eedc9Ca17830fD252C",
+
+      CWATT_contract: "0x7726FF2842315E8D677d49Fcad371ce416381311",
+      DWATT_contract: "0xe71f80fB7BafDcDBA20E89E2dC9356CB86E502BD",
+      EWATT_contract: "0x7EC2d2aa04A8FCB3e1837273C1199b7017757074",
+
+      PWATT_contract: "0x42968391b17Ce030c40F8D5B2e81f12189185f03",
+      NWATT_contract: "0xA97F060E6211DF0963DaA19837FDc52c858488BF",
+      XWATT_contract: "0x97f700CC431d05f9Bb544D7ac6c7b91fb1cE0e3E",
+      LWATT_contract: "0x616eA6D7B5a1621b70437d0e2284c0BeDBB019D3",
+      POWATT_contract: "0x875Ef9a6f3658A24446b1d1bC6a3c6A50CFb24Ba",
     },
     mumbai: {
       url: process.env.MUMBAI_URL || "",
