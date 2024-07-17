@@ -1,0 +1,157 @@
+/** 
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* Global settings for brutalist design */
+:root {
+  --ifm-color-primary: #000000;
+  --ifm-color-primary-dark: #ffffff;
+  --ifm-color-primary-darker: #000000;
+  --ifm-color-primary-darkest: #000000;
+  --ifm-color-primary-light: #000000;
+  --ifm-color-primary-lighter: #000000;
+  --ifm-color-primary-lightest: #000000;
+  --ifm-code-font-size: 20.6px;
+  --ifm-font-size-base: 20.6px;
+  --ifm-line-height-base: 170%;
+}
+
+table tr {
+    background-color: #fff;
+}
+
+/* General styling */
+body, html, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre, a,
+abbr, acronym, address, big, cite, del, dfn,
+em, img, ins, kbd, q, s, samp, small, strike,
+strong, sub, sup, tt, var, b, u, i, center,
+dl, dt, dd, ol, ul, li, fieldset, form, label,
+legend, table, caption, tbody, tfoot, thead, tr,
+th, td, article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup, menu,
+nav, output, ruby, section, summary, time, mark,
+audio, video {
+
+  background-color: #ffffff;
+  color: #000000;
+  border-color: #000000;
+  font-weight: normal;
+  font-family: 'Newfoundation Whyte' !important;
+}
+
+/* General styling for all elements */
+* {
+  font-size: 20.6px;
+  font-weight: normal;
+  line-height: 170%;
+  font-family: 'Newfoundation Whyte' !important;
+}
+
+/* Anchor styling */
+a {
+  color: #000000;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #000000;
+}
+
+
+/* Navbar styling */
+.navbar--fixed-top {
+  padding: 0px;
+}
+
+.navbar__logo img {
+  height: 24px;
+  vertical-align: middle;
+  padding-left: 20px;
+}
+
+.navbar__brand {
+  height: 100%;
+  width: 324px;
+  box-shadow: 0.25px 0 0.25px 0 #000000;
+  position: absolute;
+  left: 0px;
+}
+
+.navbar__items {
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0.25px 0 0.25px 0 #000000;
+}
+
+/* More navbar styling */
+.navbar__items--right {
+  width: 324px;
+  box-shadow: 0 0 0 0;
+}
+
+.menu__link {
+  padding-left: 12px;
+}
+
+.menu__caret:before {
+  background: var(--ifm-menu-link-sublist-icon) 50% / 1rem 1rem;
+}
+
+/* Markdown styling */
+.markdown a {
+  text-decoration: underline;
+}
+
+.markdown > h1 {
+  --ifm-h2-font-size: 2.6rem;
+  letter-spacing: -1px;
+}
+
+.markdown > h2 {
+  --ifm-h2-font-size: 1.7rem;
+}
+
+.markdown > h3 {
+  --ifm-h3-font-size: 1.25rem;
+}
+
+.col p {
+  text-align: left !important;
+}
+
+/* Font face definition */
+@font-face {
+  font-display: swap;
+  font-family: 'Newfoundation Whyte';
+  font-style: normal;
+  font-weight: 200;
+  src: local(""), url(/font/NewfoundationWhyte-Regular.woff) format("woff");
+}
+
+/* Home main div customization */
+.home main {
+  padding-top: 800px;
+  background: url("/static/img/3854863592_d7778af733_o.jpg") no-repeat center top;
+  background-size: cover;
+}
+
+/* Root hero background color */
+:root {
+  --ifm-hero-background-color: #ffffff;
+}
+
+/* Hero section styling */
+.hero {
+  background-color: #ffffff !important;
+}
+.footer--dark {
+  --ifm-footer-background-color: #ffffff;
+  --ifm-footer-color: #000000;
+  --ifm-footer-link-color: #000000;
+  --ifm-footer-title-color: #000000;
+}
+
