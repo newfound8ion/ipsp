@@ -11,7 +11,7 @@ const config = {
   favicon: "img/636cdeb29d8af379852bdd3c_fav1.png",
 
   // Set the production url of your site here
-  url: "https://ipsp.cc",
+  url: "https://developer.ipsp.cc",
   baseUrl: "/",
 
   organizationName: "newfound8ion",
