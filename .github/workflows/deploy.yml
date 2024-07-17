@@ -18,12 +18,14 @@ jobs:
           node-version: 16
           cache: yarn
       
-      - name: Enter dir
-        run: cd docs
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Build website
-        run: yarn build
+        run: |
+          cd docs
+          yarn install --frozen-lockfile
+      - name: Test build website
+        run: |
+          cd docs
+          yarn build
 
       # Popular action to deploy to GitHub Pages:
       # Docs: https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-docusaurus
