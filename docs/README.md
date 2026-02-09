@@ -1,4 +1,4 @@
-# Introducing Newcoin
+# A Reputation Layer for Agents
 
 Intelligence Network Effect is the most powerful asset of a digital network: since the basic Metcalfe's law, digital networks have evolved into self-readjusting systems recursively gaining dominance through persistent data accumulation amplified by layers of adaptive learning.
 
